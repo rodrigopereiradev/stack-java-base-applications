@@ -1,0 +1,50 @@
+plugins {
+	id 'java'
+	id 'jacoco'
+	id 'org.springframework.boot' version '{{inputs.spring_version}}'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+}
+
+group = '{{inputs.artifact_id}}'
+version = '{{inputs.project_version}}'
+sourceCompatibility = '{{inputs.java_version}}'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+	finalizedBy jacocoTestReport
+}
+
+jacoco {
+	toolVersion = "0.8.8"
+	reportsDirectory = file("$buildDir/reports/jacoco")
+}
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.required = false
+		csv.required = false
+		html.outputLocation = file("$buildDir/reports/jacoco/jacocoHtml")
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: '**/*Application.java')
+		}))
+	}
+}
+
+
+

@@ -1,6 +1,17 @@
+# {{inputs.project_name}}
 
-## Jinja
+{{inputs.project_description}}
 
-You can use jinja to make a template-data folder more dynamic.
+## Getting Started
 
-complete documentation of jinja: https://jinja.palletsprojects.com/en/3.0.x/templates/
+### Reference Documentation
+For further reference, please consider the following sections:
+
+* [Official Gradle documentation](https://docs.gradle.org)
+* [Spring Boot Gradle Plugin Reference Guide](https://docs.spring.io/spring-boot/docs/2.7.11/gradle-plugin/reference/html/)
+* [Create an OCI image](https://docs.spring.io/spring-boot/docs/2.7.11/gradle-plugin/reference/html/#build-image)
+
+### Additional Links
+These additional references should also help you:
+
+* [Gradle Build Scans – insights for your project's build](https://scans.gradle.com#gradle)

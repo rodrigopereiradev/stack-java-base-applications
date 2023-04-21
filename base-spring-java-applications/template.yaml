@@ -7,3 +7,28 @@ inputs:
     type: text
     name: project_name
     default: project-name
+  - label: Group id
+    type: text
+    name: group_id
+  - label: Artifact id
+    type: text
+    name: artifact_id
+  - label: Java Version
+    type: text
+    name: java_version
+    default: 11
+  - label: Spring Version (Versions 3+ work only with java version 17)
+    type: text
+    name: spring_version
+    default: 2.7.11
+  - label: Project description
+    type: text
+    name: project_description
+  - label: Project version
+    type: text
+    name: project_version
+    default: 0.0.1-SNAPSHOT
+
+computedInputs:
+  base_package: "{{inputs.group_id}}.{{inputs.artifact_id}}"
+  folder_structure: "{{computed_inputs.base_package | replace('.', '/')}}"

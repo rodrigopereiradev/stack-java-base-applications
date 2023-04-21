@@ -1,0 +1,9 @@
+name: base-spring-java-applications
+description: This template is used to create the base of applications with Spring, Java, and Graddle.
+types:
+  - app-template
+inputs:
+  - label: Project name
+    type: text
+    name: project_name
+    default: project-name

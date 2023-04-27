@@ -15,17 +15,141 @@ technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/ya
 types:
   - app
 inputs:
-  - label: Input Example
+  - label: Please, choose a data base type to apply into application
     type: text
-    name: example
-    default: any text
-  - label: Example of number
-    type: int
-    name: any_number
-    default: "10"
-  - label: Example of list
-    type: multiselect
-    name: any_list
+    name: database_type
     items:
-      - item1
-      - item2
+      - MySql
+      - Sql Server
+      - PostgreSql
+  - label: Do you want to set a H2 memory database
+    type: text
+    name: has_memory_database
+    items:
+      - Sim
+      - Nao
+  - label: Inform the database url
+    type: text
+    name: database_url
+  - label: Inform the database name
+    type: text
+    name: database_name
+  - label: Inform the database username
+    type: text
+    name: database_username
+  - label: Inform the database password
+    type: text
+    name: database_password
+
+hooks:
+  - type: edit
+    trigger: after-render
+    path: build.gradle
+    condition:
+      variable: database_type
+      operator: ==
+      value: MySql
+    changes:
+      - search:
+          string: "dependencies {"
+          insert-after:
+            snippet: snippets/mysql-dependency.gradle
+          when:
+            not-exists: snippets/mysql-dependency.gradle
+  - type: edit
+    trigger: after-render
+    path: src/main/resources/application.properties
+    condition:
+      variable: database_type
+      operator: ==
+      value: MySql
+    changes:
+      - insert:
+          line: 0
+          snippet: snippets/mysql-config-application.properties
+          when:
+            not-exists: snippets/mysql-config-application.properties
+
+  - type: edit
+    trigger: after-render
+    path: build.gradle
+    condition:
+      variable: database_type
+      operator: ==
+      value: Sql Server
+    changes:
+      - search:
+          string: "dependencies {"
+          insert-after:
+            snippet: snippets/sqlserver-dependency.gradle
+          when:
+            not-exists: snippets/sqlserver-dependency.gradle
+  - type: edit
+    trigger: after-render
+    path: src/main/resources/application.properties
+    condition:
+      variable: database_type
+      operator: ==
+      value: Sql Server
+    changes:
+      - insert:
+          line: 0
+          snippet: snippets/sqlserver-config-application.properties
+          when:
+            not-exists: snippets/sqlserver-config-application.properties
+
+  - type: edit
+    trigger: after-render
+    path: build.gradle
+    condition:
+      variable: database_type
+      operator: ==
+      value: PostgreSql
+    changes:
+      - search:
+          string: "dependencies {"
+          insert-after:
+            snippet: snippets/postgre-dependency.gradle
+          when:
+            not-exists: snippets/postgre-dependency.gradle
+  - type: edit
+    trigger: after-render
+    path: src/main/resources/application.properties
+    condition:
+      variable: database_type
+      operator: ==
+      value: PostgreSql
+    changes:
+      - insert:
+          line: 0
+          snippet: snippets/postgre-config-application.properties
+          when:
+            not-exists: snippets/postgre-config-application.properties
+
+  - type: edit
+    trigger: after-render
+    path: build.gradle
+    condition:
+      variable: has_memory_database
+      operator: ==
+      value: Sim
+    changes:
+      - search:
+          string: "dependencies {"
+          insert-after:
+            snippet: snippets/h2-dependency.gradle
+          when:
+            not-exists: snippets/h2-dependency.gradle
+  - type: edit
+    trigger: after-render
+    path: src/main/resources/application.properties
+    condition:
+      variable: has_memory_database
+      operator: ==
+      value: Sim
+    changes:
+      - insert:
+          line: -1
+          snippet: snippets/h2-config-application.properties
+          when:
+            not-exists: snippets/h2-config-application.properties

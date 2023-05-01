@@ -1,0 +1,33 @@
+name: plugin-restassured-integration-tests
+description: This plugin will set dependencies of rest assured fot integrations tests
+display-name: plugin-restassured-integration-tests
+picture: plugin.png
+category: backend # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/plugin/#category
+compatibility:
+  - java
+  - spring
+about: docs/about.md
+usage: docs/usage.md
+use-case: docs/use-case.md
+implementation: docs/implementation.md
+technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/yaml/#technologies
+  - "Api"
+types:
+  - app
+
+hooks:
+  - type: edit
+    trigger: after-render
+    path: build.gradle
+    changes:
+      - search:
+          string: "dependencies {"
+          insert-after:
+            snippet: snippets/restassured-dependency.gradle
+  - type: edit
+    trigger: after-render
+    path: src/main/resources/application.properties
+    changes:
+      - insert:
+          line: -1
+          snippet: snippets/restassured-config.properties

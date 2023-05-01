@@ -23,17 +23,11 @@ inputs:
       - Sql Server
       - PostgreSql
   - label: Do you want to set a H2 memory database? Y (Yes) N (No)
-    type: text
+    type: bool
     name: has_memory_database
-    items:
-      - Y
-      - N
   - label: Do you want to set migration with FlyWay? Y (Yes) N (No)
-    type: text
+    type: bool
     name: has_database_migration
-    items:
-      - Y
-      - N
   - label: Inform the database url
     type: text
     name: database_url
@@ -44,7 +38,7 @@ inputs:
     type: text
     name: database_username
   - label: Inform the database password
-    type: text
+    type: password
     name: database_password
 
 hooks:
@@ -138,7 +132,7 @@ hooks:
     condition:
       variable: has_memory_database
       operator: ==
-      value: Y
+      value: True
     changes:
       - search:
           string: "dependencies {"
@@ -152,7 +146,7 @@ hooks:
     condition:
       variable: has_memory_database
       operator: ==
-      value: Y
+      value: True
     changes:
       - insert:
           line: -1
@@ -166,7 +160,7 @@ hooks:
     condition:
       variable: has_database_migration
       operator: ==
-      value: Y
+      value: True
     changes:
       - search:
           string: "dependencies {"
@@ -180,4 +174,4 @@ hooks:
     condition:
       variable: has_database_migration
       operator: ==
-      value: Y
+      value: True

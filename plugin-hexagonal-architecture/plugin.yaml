@@ -1,0 +1,27 @@
+name: plugin-hexagonal-architecture
+description: This pluggin will create a strucutre of packages into application
+display-name: plugin-hexagonal-architecture
+picture: plugin.png
+category: backend # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/plugin/#category
+compatibility:
+  - java
+  - spring
+about: docs/about.md
+usage: docs/usage.md
+use-case: docs/use-case.md
+implementation: docs/implementation.md
+technologies: # Ref: https://docs.stackspot.com/docs/create-stacks/yaml-files/yaml/#technologies
+  - "Api"
+types:
+  - app
+inputs:
+  - label: Application group id
+    type: text
+    name: application_group_id
+  - label: Application artifact id
+    type: text
+    name: application_artifact_id
+
+computedInputs:
+  base_package: "{{inputs.application_group_id}}.{{inputs.application_artifact_id}}"
+  folder_structure: "{{computed_inputs.base_package | replace('.', '/')}}"

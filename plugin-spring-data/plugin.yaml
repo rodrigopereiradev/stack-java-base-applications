@@ -22,12 +22,18 @@ inputs:
       - MySql
       - Sql Server
       - PostgreSql
-  - label: Do you want to set a H2 memory database
+  - label: Do you want to set a H2 memory database? Y (Yes) N (No)
     type: text
     name: has_memory_database
     items:
-      - Sim
-      - Nao
+      - Y
+      - N
+  - label: Do you want to set migration with FlyWay? Y (Yes) N (No)
+    type: text
+    name: has_database_migration
+    items:
+      - Y
+      - N
   - label: Inform the database url
     type: text
     name: database_url
@@ -132,7 +138,7 @@ hooks:
     condition:
       variable: has_memory_database
       operator: ==
-      value: Sim
+      value: Y
     changes:
       - search:
           string: "dependencies {"
@@ -146,10 +152,32 @@ hooks:
     condition:
       variable: has_memory_database
       operator: ==
-      value: Sim
+      value: Y
     changes:
       - insert:
           line: -1
           snippet: snippets/h2-config-application.properties
           when:
             not-exists: snippets/h2-config-application.properties
+
+  - type: edit
+    trigger: after-render
+    path: build.gradle
+    condition:
+      variable: has_database_migration
+      operator: ==
+      value: Y
+    changes:
+      - search:
+          string: "dependencies {"
+          insert-after:
+            snippet: snippets/flyway-dependency.gradle
+          when:
+            not-exists: snippets/flyway-dependency.gradle
+  - type: render-templates
+    trigger: after-render
+    path: migration-directories
+    condition:
+      variable: has_database_migration
+      operator: ==
+      value: Y
